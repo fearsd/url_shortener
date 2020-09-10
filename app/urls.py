@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import home
+from .views import URLViewSet
 
 urlpatterns = [
-    path('', home)
+    path('', URLViewSet.as_view({'post': 'create'})),
+    path('<slug>', URLViewSet.as_view({'get': 'retrieve'}))
 ]

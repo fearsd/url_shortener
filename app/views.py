@@ -1,6 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
+from .serializers import URLSerializer
+from .models import URL
+from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework.mixins import CreateModelMixin
 
 # Create your views here.
-def home(request):
-    return HttpResponse('fsfsfsd')
+class URLViewSet(viewsets.GenericViewSet, CreateModelMixin):
+    serializer_class = URLSerializer
+    def retrieve(self, request, slug):
+        queryset = URL.objects.all()
+        url = get_object_or_404(queryset, hash_slug=slug)
+        serializer = URLSerializer(url)
+        return Response(serializer.data)
