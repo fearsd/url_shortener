@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from .serializers import URLSerializer
 from .models import URL
 from rest_framework import viewsets
@@ -12,5 +12,4 @@ class URLViewSet(viewsets.GenericViewSet, CreateModelMixin):
     def retrieve(self, request, slug):
         queryset = URL.objects.all()
         url = get_object_or_404(queryset, hash_slug=slug)
-        serializer = URLSerializer(url)
-        return Response(serializer.data)
+        return HttpResponseRedirect(url.exact_url)
